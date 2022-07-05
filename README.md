@@ -3,7 +3,7 @@ Create a Federated GraphQL API with REST APIs using Hasura GraphQL Engine (HGE)
 
 This repository highlights 2 ways to use the Hasura GraphQL Engine to wrap REST APIs in a GraphQL API:
 - Hasura [actions](https://hasura.io/docs/latest/graphql/core/actions/index/)
-- Hasura [Remote Schemas](https://hasura.io/docs/latest/graphql/core/remote-schemas/index/) + [OpenAPI-to-GraphQL](https://github.com/IBM/openapi-to-graphql)
+- Hasura [remote schemas](https://hasura.io/docs/latest/graphql/core/remote-schemas/index/) + [OpenAPI-to-GraphQL](https://github.com/IBM/openapi-to-graphql)
 
 ## Hasura Actions
 The first example uses :

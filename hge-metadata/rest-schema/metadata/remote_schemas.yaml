@@ -1,0 +1,5 @@
+- name: rest-api
+  definition:
+    url_from_env: REMOTE_SCHEMA_URL
+    timeout_seconds: 60
+    customization: {}

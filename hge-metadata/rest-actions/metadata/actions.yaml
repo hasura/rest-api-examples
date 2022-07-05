@@ -1,0 +1,166 @@
+actions:
+  - name: create_playlist
+    definition:
+      kind: synchronous
+      handler: '{{REST_API_BASE_URL}}/playlists'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "Name": {{$body.input.Name}},
+              "PlaylistTracks": [
+                {{range _, TrackId := $body.input.Tracks }}
+                  {
+                    "TrackId": {{TrackId}}
+                  }
+                {{end}}
+              ]
+            }
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: create_playlist_track
+    definition:
+      kind: synchronous
+      handler: '{{REST_API_BASE_URL}}/playlists'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "TrackId": {{$body.input.TrackId}}
+            }
+        url: '{{$base_url}}/{{$body.input.PlaylistId}}/Track'
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: delete_playlist
+    definition:
+      kind: synchronous
+      handler: '{{REST_API_BASE_URL}}/playlists'
+      request_transform:
+        request_headers:
+          remove_headers:
+            - content-type
+          add_headers: {}
+        body:
+          action: remove
+        url: '{{$base_url}}/{{$body.input.PlaylistId}}'
+        method: DELETE
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: delete_playlist_track
+    definition:
+      kind: synchronous
+      handler: '{{REST_API_BASE_URL}}/playlists'
+      request_transform:
+        request_headers:
+          remove_headers:
+            - content-type
+          add_headers: {}
+        body:
+          action: remove
+        url: '{{$base_url}}/{{$body.input.PlaylistId}}/Track/{{$body.input.TrackId}}'
+        method: DELETE
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: playlist
+    definition:
+      kind: ""
+      handler: '{{REST_API_BASE_URL}}/playlists'
+      request_transform:
+        request_headers:
+          remove_headers:
+            - content-type
+          add_headers: {}
+        body:
+          action: remove
+        method: GET
+        version: 2
+        query_params:
+          offset: '{{$body.input?.offset}}'
+          limit: '{{$body.input?.limit}}'
+        template_engine: Kriti
+  - name: playlist_by_id
+    definition:
+      kind: ""
+      handler: '{{REST_API_BASE_URL}}/playlists'
+      request_transform:
+        request_headers:
+          remove_headers:
+            - content-type
+          add_headers: {}
+        body:
+          action: remove
+        url: '{{$base_url}}/{{$body.input.PlaylistId}}'
+        method: GET
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: track
+    definition:
+      kind: ""
+      handler: '{{REST_API_BASE_URL}}/tracks'
+      request_transform:
+        request_headers:
+          remove_headers:
+            - content-type
+          add_headers: {}
+        body:
+          action: remove
+        method: GET
+        version: 2
+        query_params:
+          offset: '{{$body.input?.offset}}'
+          limit: '{{$body.input?.limit}}'
+        template_engine: Kriti
+  - name: track_by_id
+    definition:
+      kind: ""
+      handler: '{{REST_API_BASE_URL}}/tracks'
+      request_transform:
+        request_headers:
+          remove_headers:
+            - content-type
+          add_headers: {}
+        body:
+          action: remove
+        url: '{{$base_url}}/{{$body.input.TrackId}}'
+        method: GET
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: update_playlist
+    definition:
+      kind: synchronous
+      handler: '{{REST_API_BASE_URL}}/playlists'
+      request_transform:
+        request_headers:
+          remove_headers:
+            - content-type
+          add_headers: {}
+        body:
+          action: remove
+        url: '{{$base_url}}/{{$body.input.PlaylistId}}'
+        method: PATCH
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+    - name: Playlist
+    - name: PlaylistTrack
+    - name: Genre
+    - name: MediaType
+    - name: Artist
+    - name: Album
+    - name: Track
+  scalars:
+    - name: Price

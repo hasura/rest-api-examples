@@ -1,0 +1,111 @@
+type Mutation {
+  create_playlist(
+    Name: String
+    Tracks: [Int!]!
+  ): Playlist!
+}
+
+type Mutation {
+  create_playlist_track(
+    PlaylistId: Int!
+    TrackId: Int!
+  ): Playlist!
+}
+
+type Mutation {
+  delete_playlist(
+    PlaylistId: Int!
+  ): Playlist!
+}
+
+type Mutation {
+  delete_playlist_track(
+    PlaylistId: Int!
+    TrackId: Int!
+  ): Playlist!
+}
+
+type Query {
+  playlist(
+    limit: Int!
+    offset: Int!
+  ): [Playlist]
+}
+
+type Query {
+  playlist_by_id(
+    PlaylistId: Int!
+  ): Playlist!
+}
+
+type Query {
+  track(
+    limit: Int!
+    offset: Int!
+  ): [Track]
+}
+
+type Query {
+  track_by_id(
+    TrackId: Int!
+  ): Track!
+}
+
+type Mutation {
+  update_playlist(
+    PlaylistId: Int!
+    Name: String
+  ): Playlist!
+}
+
+type Playlist {
+  PlaylistId: Int!
+  Name: String
+  PlaylistTracks: [PlaylistTrack!]!
+}
+
+type PlaylistTrack {
+  PlaylistId: Int!
+  TrackId: Int!
+  Track: Track
+}
+
+type Genre {
+  GenreId: Int!
+  Name: String
+}
+
+type MediaType {
+  MediaTypeId: Int!
+  Name: String
+}
+
+type Artist {
+  ArtistId: Int!
+  Name: String
+}
+
+type Album {
+  AlbumId: Int!
+  Title: String!
+  ArtistId: Int!
+  Artist: Artist!
+}
+
+type Track {
+  TrackId: Int!
+  Name: String!
+  AlbumId: Int
+  Album: Album
+  MediaTypeId: Int!
+  MediaType: MediaType!
+  GenreId: Int
+  Genre: Genre
+  Composer: String
+  Milliseconds: Int!
+  Bytes: Int
+  UnitPrice: Price
+}
+
+scalar Price
+

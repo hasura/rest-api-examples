@@ -1,0 +1,5 @@
+# files or directories that match these patters will be ignored when building the image
+node_modules
+build
+.gitignore
+Dockerfile

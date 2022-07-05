@@ -1,0 +1,132 @@
+{
+  "resource_version": 30,
+  "metadata": {
+    "version": 3,
+    "sources": [],
+    "actions": [
+      {
+        "name": "user",
+        "definition": {
+          "handler": "https://random-data-api.com/api/users/random_user",
+          "output_type": "User",
+          "request_transform": {
+            "request_headers": {
+              "remove_headers": [
+                "content-type"
+              ],
+              "add_headers": {}
+            },
+            "method": "GET",
+            "version": 2,
+            "query_params": {},
+            "template_engine": "Kriti"
+          },
+          "type": "query"
+        }
+      },
+      {
+        "name": "userSubscription",
+        "definition": {
+          "handler": "https://random-data-api.com/api/users/random_user",
+          "output_type": "UserSubscription",
+          "request_transform": {
+            "request_headers": {
+              "remove_headers": [
+                "content-type"
+              ],
+              "add_headers": {}
+            },
+            "method": "GET",
+            "version": 2,
+            "query_params": {},
+            "template_engine": "Kriti"
+          },
+          "response_transform": {
+            "body": {
+              "action": "transform",
+              "template": "{ \"id\": {{$body.id}}, \"uid\": \"{{$body.uid}}\", \"firstName\": \"{{$body.first_name}}\", \"lastName\": \"{{$body.last_name}}\", \"email\": \"{{$body.email}}\", \"plan\": \"{{$body.subscription.plan}}\", \"status\": \"{{$body.subscription.status}}\", \"paymentMethod\": \"{{$body.subscription.payment_method}}\", \"term\": \"{{$body.subscription.term}}\" }"
+            },
+            "version": 2,
+            "template_engine": "Kriti"
+          },
+          "type": "query"
+        }
+      }
+    ],
+    "custom_types": {
+      "objects": [
+        {
+          "name": "User",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Int!"
+            },
+            {
+              "name": "uid",
+              "type": "String!"
+            },
+            {
+              "name": "first_name",
+              "type": "String"
+            },
+            {
+              "name": "last_name",
+              "type": "String"
+            },
+            {
+              "name": "email",
+              "type": "String"
+            }
+          ]
+        },
+        {
+          "name": "UserSubscription",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Int!"
+            },
+            {
+              "name": "uid",
+              "type": "String!"
+            },
+            {
+              "name": "firstName",
+              "type": "String"
+            },
+            {
+              "name": "lastName",
+              "type": "String"
+            },
+            {
+              "name": "email",
+              "type": "String"
+            },
+            {
+              "name": "plan",
+              "type": "String"
+            },
+            {
+              "name": "status",
+              "type": "String"
+            },
+            {
+              "name": "paymentMethod",
+              "type": "String"
+            },
+            {
+              "name": "term",
+              "type": "String"
+            }
+          ]
+        }
+      ],
+      "scalars": [
+        {
+          "name": "Price"
+        }
+      ]
+    }
+  }
+}

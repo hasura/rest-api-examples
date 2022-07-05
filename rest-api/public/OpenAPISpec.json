@@ -1,0 +1,3085 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"IntId": {
+				"type": "integer",
+				"format": "int32",
+				"description": "An integer that serves as a record id. Used for primary keys and foreign keys.",
+				"minimum": 1
+			},
+			"Artist": {
+				"description": "Artist",
+				"properties": {
+					"ArtistId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"ArtistId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MediaType": {
+				"description": "Media Type",
+				"properties": {
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"MediaTypeId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Genre": {
+				"description": "Genre",
+				"properties": {
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"GenreId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Price": {
+				"type": "number",
+				"format": "float",
+				"description": "A price value. Has a precision of 2 significant digits after the decimal point."
+			},
+			"AlbumResourceTrack": {
+				"properties": {
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Composer": {
+						"type": "string"
+					},
+					"Milliseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"Bytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					},
+					"MediaType": {
+						"$ref": "#/components/schemas/MediaType"
+					},
+					"Genre": {
+						"$ref": "#/components/schemas/Genre"
+					}
+				},
+				"required": [
+					"TrackId",
+					"Name",
+					"MediaTypeId",
+					"Milliseconds",
+					"UnitPrice",
+					"MediaType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AlbumResource": {
+				"properties": {
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Title": {
+						"type": "string"
+					},
+					"ArtistId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Artist": {
+						"$ref": "#/components/schemas/Artist"
+					},
+					"Tracks": {
+						"items": {
+							"$ref": "#/components/schemas/AlbumResourceTrack"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"AlbumId",
+					"Title",
+					"ArtistId",
+					"Artist",
+					"Tracks"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ValidateErrorJSON": {
+				"description": "A validation error",
+				"properties": {
+					"message": {
+						"type": "string",
+						"enum": [
+							"Validation failed"
+						],
+						"nullable": false
+					},
+					"details": {
+						"properties": {},
+						"additionalProperties": {},
+						"type": "object"
+					}
+				},
+				"required": [
+					"message",
+					"details"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"NotFoundError": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Album": {
+				"description": "Album",
+				"properties": {
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Title": {
+						"type": "string"
+					},
+					"ArtistId": {
+						"$ref": "#/components/schemas/IntId"
+					}
+				},
+				"required": [
+					"AlbumId",
+					"Title",
+					"ArtistId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AlbumTrackInsertInput": {
+				"description": "Album Track Insert Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					},
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Composer": {
+						"type": "string"
+					},
+					"Milliseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"Bytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					}
+				},
+				"required": [
+					"Name",
+					"MediaTypeId",
+					"Milliseconds",
+					"UnitPrice"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AlbumInsertInput": {
+				"description": "Album Insert Input",
+				"properties": {
+					"Title": {
+						"type": "string"
+					},
+					"ArtistId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Tracks": {
+						"items": {
+							"$ref": "#/components/schemas/AlbumTrackInsertInput"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"Title",
+					"ArtistId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AlbumUpdateInput": {
+				"description": "Album Update Input",
+				"properties": {
+					"Title": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"Title"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ArtistInsertInput": {
+				"description": "Artist Insert Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ArtistUpdateInput": {
+				"description": "Artist Update Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Customer": {
+				"description": "Customer",
+				"properties": {
+					"CustomerId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"Company": {
+						"type": "string"
+					},
+					"Address": {
+						"type": "string"
+					},
+					"City": {
+						"type": "string"
+					},
+					"State": {
+						"type": "string"
+					},
+					"Country": {
+						"type": "string"
+					},
+					"PostalCode": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"Fax": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"SupportRepId": {
+						"$ref": "#/components/schemas/IntId"
+					}
+				},
+				"required": [
+					"CustomerId",
+					"FirstName",
+					"LastName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomerInsertInput": {
+				"description": "Customer Insert Input",
+				"properties": {
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"Company": {
+						"type": "string"
+					},
+					"Address": {
+						"type": "string"
+					},
+					"City": {
+						"type": "string"
+					},
+					"State": {
+						"type": "string"
+					},
+					"Country": {
+						"type": "string"
+					},
+					"PostalCode": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"Fax": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"SupportRepId": {
+						"$ref": "#/components/schemas/IntId"
+					}
+				},
+				"required": [
+					"FirstName",
+					"LastName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomerUpdateInput": {
+				"description": "Customer Update Input",
+				"properties": {
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"Company": {
+						"type": "string"
+					},
+					"Address": {
+						"type": "string"
+					},
+					"City": {
+						"type": "string"
+					},
+					"State": {
+						"type": "string"
+					},
+					"Country": {
+						"type": "string"
+					},
+					"PostalCode": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"Fax": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"SupportRepId": {
+						"$ref": "#/components/schemas/IntId"
+					}
+				},
+				"required": [
+					"FirstName",
+					"LastName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Employee": {
+				"description": "Employee",
+				"properties": {
+					"EmployeeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"Title": {
+						"type": "string"
+					},
+					"ReportsTo": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"BirthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"HireDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"Address": {
+						"type": "string"
+					},
+					"City": {
+						"type": "string"
+					},
+					"State": {
+						"type": "string"
+					},
+					"Country": {
+						"type": "string"
+					},
+					"PostalCode": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"Fax": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"EmployeeId",
+					"LastName",
+					"FirstName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EmployeeInsertInput": {
+				"description": "Employee Insert Input",
+				"properties": {
+					"Title": {
+						"type": "string"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"Address": {
+						"type": "string"
+					},
+					"City": {
+						"type": "string"
+					},
+					"State": {
+						"type": "string"
+					},
+					"Country": {
+						"type": "string"
+					},
+					"PostalCode": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"Fax": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"ReportsTo": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"BirthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"HireDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"FirstName",
+					"LastName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EmployeeUpdateInput": {
+				"description": "Employee Update Input",
+				"properties": {
+					"Title": {
+						"type": "string"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"Address": {
+						"type": "string"
+					},
+					"City": {
+						"type": "string"
+					},
+					"State": {
+						"type": "string"
+					},
+					"Country": {
+						"type": "string"
+					},
+					"PostalCode": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"Fax": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"ReportsTo": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"BirthDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"HireDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"FirstName",
+					"LastName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GenreInsertInput": {
+				"description": "Genre Insert Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GenreUpdateInput": {
+				"description": "Genre Update Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InvoiceLineResource": {
+				"properties": {
+					"InvoiceLineId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"InvoiceId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					},
+					"Quantity": {
+						"$ref": "#/components/schemas/IntId"
+					}
+				},
+				"required": [
+					"InvoiceLineId",
+					"InvoiceId",
+					"TrackId",
+					"UnitPrice",
+					"Quantity"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InvoiceResource": {
+				"properties": {
+					"InvoiceId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"CustomerId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"InvoiceDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"BillingAddress": {
+						"type": "string"
+					},
+					"BillingCity": {
+						"type": "string"
+					},
+					"BillingState": {
+						"type": "string"
+					},
+					"BillingCountry": {
+						"type": "string"
+					},
+					"BillingPostalCode": {
+						"type": "string"
+					},
+					"Total": {
+						"$ref": "#/components/schemas/Price"
+					},
+					"Lines": {
+						"items": {
+							"$ref": "#/components/schemas/InvoiceLineResource"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"InvoiceId",
+					"CustomerId",
+					"InvoiceDate",
+					"Total",
+					"Lines"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InvoiceLineInsertInput": {
+				"description": "Invoice Line Insert Input",
+				"properties": {
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					},
+					"Quantity": {
+						"$ref": "#/components/schemas/IntId"
+					}
+				},
+				"required": [
+					"TrackId",
+					"UnitPrice",
+					"Quantity"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InvoiceInsertInput": {
+				"description": "Invoice Insert Input",
+				"properties": {
+					"CustomerId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"InvoiceDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"BillingAddress": {
+						"type": "string"
+					},
+					"BillingCity": {
+						"type": "string"
+					},
+					"BillingState": {
+						"type": "string"
+					},
+					"BillingCountry": {
+						"type": "string"
+					},
+					"BillingPostalCode": {
+						"type": "string"
+					},
+					"Total": {
+						"$ref": "#/components/schemas/Price"
+					},
+					"Lines": {
+						"items": {
+							"$ref": "#/components/schemas/InvoiceLineInsertInput"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"CustomerId",
+					"InvoiceDate",
+					"Total",
+					"Lines"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MediaTypeInsertInput": {
+				"description": "MediaType Insert Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MediaTypeUpdateInput": {
+				"description": "MediaType Update Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlaylistResourceAlbum": {
+				"properties": {
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Title": {
+						"type": "string"
+					},
+					"ArtistId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Artist": {
+						"$ref": "#/components/schemas/Artist"
+					}
+				},
+				"required": [
+					"AlbumId",
+					"Title",
+					"ArtistId",
+					"Artist"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlaylistResourceTrack": {
+				"properties": {
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Composer": {
+						"type": "string"
+					},
+					"Milliseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"Bytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					},
+					"Album": {
+						"$ref": "#/components/schemas/PlaylistResourceAlbum"
+					},
+					"MediaType": {
+						"$ref": "#/components/schemas/MediaType"
+					},
+					"Genre": {
+						"$ref": "#/components/schemas/Genre"
+					}
+				},
+				"required": [
+					"TrackId",
+					"Name",
+					"MediaTypeId",
+					"Milliseconds",
+					"UnitPrice",
+					"MediaType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlaylistResourcePlaylistTrack": {
+				"properties": {
+					"PlaylistId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Track": {
+						"$ref": "#/components/schemas/PlaylistResourceTrack"
+					}
+				},
+				"required": [
+					"PlaylistId",
+					"TrackId",
+					"Track"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlaylistResource": {
+				"properties": {
+					"PlaylistId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"PlaylistTracks": {
+						"items": {
+							"$ref": "#/components/schemas/PlaylistResourcePlaylistTrack"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"PlaylistId",
+					"PlaylistTracks"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlaylistTrackInsertInput": {
+				"description": "Playlist Track Insert Input",
+				"properties": {
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					}
+				},
+				"required": [
+					"TrackId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlaylistInsertInput": {
+				"description": "Playlist Insert Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					},
+					"PlaylistTracks": {
+						"items": {
+							"$ref": "#/components/schemas/PlaylistTrackInsertInput"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"PlaylistTracks"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlaylistUpdateInput": {
+				"description": "Playlist Update Input",
+				"properties": {
+					"Name": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TrackResourceAlbum": {
+				"properties": {
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Title": {
+						"type": "string"
+					},
+					"ArtistId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Artist": {
+						"$ref": "#/components/schemas/Artist"
+					}
+				},
+				"required": [
+					"AlbumId",
+					"Title",
+					"ArtistId",
+					"Artist"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TrackResource": {
+				"properties": {
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Composer": {
+						"type": "string"
+					},
+					"Milliseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"Bytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					},
+					"Album": {
+						"$ref": "#/components/schemas/TrackResourceAlbum"
+					},
+					"MediaType": {
+						"$ref": "#/components/schemas/MediaType"
+					},
+					"Genre": {
+						"$ref": "#/components/schemas/Genre"
+					}
+				},
+				"required": [
+					"TrackId",
+					"Name",
+					"MediaTypeId",
+					"Milliseconds",
+					"UnitPrice",
+					"MediaType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Track": {
+				"description": "Track",
+				"properties": {
+					"TrackId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Composer": {
+						"type": "string"
+					},
+					"Milliseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"Bytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					}
+				},
+				"required": [
+					"TrackId",
+					"Name",
+					"MediaTypeId",
+					"Milliseconds",
+					"UnitPrice"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TrackInsertInput": {
+				"description": "Track Insert Input",
+				"properties": {
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Composer": {
+						"type": "string"
+					},
+					"Milliseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"Bytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					}
+				},
+				"required": [
+					"Name",
+					"MediaTypeId",
+					"Milliseconds",
+					"UnitPrice"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TrackUpdateInput": {
+				"description": "Track Update Input",
+				"properties": {
+					"AlbumId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"MediaTypeId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"GenreId": {
+						"$ref": "#/components/schemas/IntId"
+					},
+					"Composer": {
+						"type": "string"
+					},
+					"Milliseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"Bytes": {
+						"type": "number",
+						"format": "double"
+					},
+					"UnitPrice": {
+						"$ref": "#/components/schemas/Price"
+					}
+				},
+				"required": [
+					"Name",
+					"MediaTypeId",
+					"Milliseconds",
+					"UnitPrice"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "rest-api",
+		"version": "1.0.0",
+		"description": "Sample REST API built on the Chinook database, for Hasura demo",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "benoit ranque"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/albums": {
+			"get": {
+				"operationId": "GetAlbums",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AlbumResource"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Album"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertAlbum",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Album"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Album"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AlbumInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/albums/{AlbumId}": {
+			"get": {
+				"operationId": "GetAlbum",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AlbumResource"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Album"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "AlbumId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateAlbum",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Album"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Album"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "AlbumId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AlbumUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteAlbum",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Album"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"Album"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "AlbumId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/artists": {
+			"get": {
+				"operationId": "GetArtists",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Artist"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Artist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertArtist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Artist"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Artist"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ArtistInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/artists/{ArtistId}": {
+			"get": {
+				"operationId": "GetArtist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Artist"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Artist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "ArtistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateArtist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Artist"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Artist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "ArtistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ArtistUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteArtist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Artist"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"Artist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "ArtistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/customers": {
+			"get": {
+				"operationId": "GetCustomers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Customer"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Customer"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Customer"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Customer"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CustomerInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/customers/{CustomerId}": {
+			"get": {
+				"operationId": "GetCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Customer"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Customer"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "CustomerId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Customer"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Customer"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "CustomerId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CustomerUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteCustomer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Customer"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"Customer"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "CustomerId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/employees": {
+			"get": {
+				"operationId": "GetEmployees",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Employee"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Employee"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertEmployee",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Employee"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Employee"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EmployeeInsertInput"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/employees/{EmployeeId}": {
+			"get": {
+				"operationId": "GetEmployee",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Employee"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Employee"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "EmployeeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateEmployee",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Employee"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Employee"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "EmployeeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EmployeeUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteEmployee",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Employee"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"Employee"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "EmployeeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/genres": {
+			"get": {
+				"operationId": "GetGenres",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Genre"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Genre"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertGenre",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Genre"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Genre"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GenreInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/genres/{GenreId}": {
+			"get": {
+				"operationId": "GetGenre",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Genre"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Genre"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "GenreId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateGenre",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Genre"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Genre"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "GenreId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GenreUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteGenre",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Genre"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"Genre"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "GenreId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/invoices": {
+			"get": {
+				"operationId": "GetInvoices",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/InvoiceResource"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Invoice"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertInvoice",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InvoiceResource"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Invoice"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/InvoiceInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/invoices/{InvoiceId}": {
+			"get": {
+				"operationId": "GetInvoice",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InvoiceResource"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Invoice"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "InvoiceId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/mediaTypes": {
+			"get": {
+				"operationId": "GetMediaTypes",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/MediaType"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"MediaType"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertMediaType",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MediaType"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"MediaType"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MediaTypeInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/mediaTypes/{MediaTypeId}": {
+			"get": {
+				"operationId": "GetMediaType",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MediaType"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"MediaType"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "MediaTypeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateMediaType",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MediaType"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"MediaType"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "MediaTypeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MediaTypeUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteMediaType",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/MediaType"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"MediaType"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "MediaTypeId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/playlists": {
+			"get": {
+				"operationId": "GetPlaylists",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/PlaylistResource"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Playlist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertPlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlaylistResource"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Playlist"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlaylistInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/playlists/{PlaylistId}": {
+			"get": {
+				"operationId": "GetPlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlaylistResource"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Playlist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "PlaylistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdatePlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlaylistResource"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Playlist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "PlaylistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlaylistUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeletePlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlaylistResource"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"Playlist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "PlaylistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/playlists/{PlaylistId}/Track": {
+			"post": {
+				"operationId": "InsertPlaylistTrack",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlaylistResource"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Playlist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "PlaylistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlaylistTrackInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/playlists/{PlaylistId}/Track/{TrackId}": {
+			"delete": {
+				"operationId": "DeletePlaylistTrack",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PlaylistResource"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Playlist"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "PlaylistId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					},
+					{
+						"in": "path",
+						"name": "TrackId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		},
+		"/tracks": {
+			"get": {
+				"operationId": "GetTracks",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/TrackResource"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a set of resources. Can be paginated",
+				"tags": [
+					"Track"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "how many records should be returned",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"default": 20,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					},
+					{
+						"description": "how many records to offset by",
+						"in": "query",
+						"name": "offset",
+						"required": false,
+						"schema": {
+							"default": 0,
+							"format": "int32",
+							"type": "integer",
+							"minimum": 0
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "InsertTrack",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Track"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new instance of the resource. Returns the created resource.",
+				"tags": [
+					"Track"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TrackInsertInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tracks/{TrackId}": {
+			"get": {
+				"operationId": "GetTrack",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TrackResource"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/NotFoundError"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Validation failed",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ValidateErrorJSON"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a single resource using the resource id.",
+				"tags": [
+					"Track"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "TrackId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateTrack",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Track"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update the resource using the resource id. Returns the updated resource.",
+				"tags": [
+					"Track"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "TrackId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Request Body",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TrackUpdateInput",
+								"description": "Request Body"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteTrack",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Track"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete the resource using the resource id. Returns the deleted resource.",
+				"tags": [
+					"Track"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "resource id",
+						"in": "path",
+						"name": "TrackId",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/IntId"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
